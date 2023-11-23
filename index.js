@@ -17,10 +17,23 @@ class Tree{
             let half=Math.round((start+end)/2);        
             this.root=new Node(array[half],this.buildTree(array,start,half-1),this.buildTree(array,half+1,end));    
         }
-        return this.root
-        
-    
+        return this.root    
     }
+
+    insert(value,root=this.root){      
+      if(root==null){
+       return new Node(value);
+      }else{
+        if(value<root.data){       
+         root.left=this.insert(value,root.left);
+        }else if(value>root.data){
+          root.right=this.insert(value,root.right);
+        }        
+        return root;        
+      }           
+    }
+     
+    
 }
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -35,6 +48,7 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
       prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
     }
   };
-let array=[1,2,3,4,5]
+let array=[2,3,4,5,6,7,8,9]
 let tree=new Tree(array)
+tree.insert(10);
 prettyPrint(tree.root)
