@@ -43,10 +43,44 @@ class Tree{
         root.right = this.delete(value,root.right);
       }else if(value==root.data && root.right==null && root.left==null){       
        return null;
+       //Case 2 deleting node with just one child
+      }else if(value==root.data && root.right !== null && root.left==null){
+        let tempRoot=root.right;
+        root=null;
+        return tempRoot;
+      }else if(value==root.data && root.right == null && root.left !==null){
+        let tempRoot=root.left;
+        root=null;
+        return tempRoot;
+        //case 3 deleting node with 2 childs
+      }else if(value==root.data && root.right!== null & root.left !== null){
+        let successor = root.right;
+        if (successor.left !== null) {
+            while (successor.left !== null) {
+                successor = successor.left;
+            }
+            root.data = successor.data;
+            root.right = this.delete(successor.data, root.right);
+        } else {
+            // If the successor has no left child, simply replace the root's data
+            root.data = successor.data;
+            root.right = this.delete(successor.data, root.right);
+        }
+        return root;
+      }
+      return root;     
+    }
+    find(value,root=this.root){
+      if(root==null){
+        return "No value found"
+      }else if(value == root.data){
+        return console.log(root)
+      }else if(value>root.data){
+        return this.find(value,root.right)
+      }else if(value< root.data){
+        return this.find(value,root.left)
       }
       
-      return root;
-     
     }
      
     
@@ -64,9 +98,12 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
       prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
     }
   };
-let array=[2,3,4,5,6,7,8,9]
+let array=[20,30,32,34,36,40,50,60,65,70,75,80,85]
 let tree=new Tree(array)
 tree.insert(1);
-tree.delete(9);
-tree.delete(7);
+tree.delete(34);
+tree.delete(36)
+console.log(tree.find(50));
+
+
 prettyPrint(tree.root)
